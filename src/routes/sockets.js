@@ -37,6 +37,7 @@ wss.on('connection', (ws) => {
   });
 })
 
+// getBchInfo()
 var interval = setInterval(async function() { await getBchInfo(); }, 3600000);
 
 //Function to generate a unique ID
