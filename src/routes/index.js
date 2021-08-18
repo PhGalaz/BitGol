@@ -105,7 +105,7 @@ async function getLives () {
 
 //Get current leagues from api once a week
 async function UpdateLeagues () {
-  var data = await api.api_football('https://api-football-v1.p.rapidapi.com/v2/fixtures/live');
+  var data = await api.api_football('https://api-football-v1.p.rapidapi.com/v3/leagues');
   data = data.data.response
   for(x in data){
     for(y in data[x].seasons){
@@ -128,6 +128,7 @@ async function UpdateLeagues () {
     }
   }
 }
+// UpdateLeagues ()
 
 //Get countries from api once a week
 async function UpdateCountries () {
@@ -148,6 +149,16 @@ async function UpdateCountries () {
 var interval = setInterval(function() { UpdateCountries(); }, 604800000);
 
 
+//Get teams from api once a week
+async function UpdateTeams () {
+  var params = {
+    league: '265',
+    season: '2022'
+  }
+  var data = await api.api_football('https://api-football-v1.p.rapidapi.com/v3/teams', params);
+  console.log(data.data.response)
+}
+UpdateTeams()
 
 // var interval = setInterval(function() { UpdateLeagues(); }, 604800000);
 // getLives();

@@ -5,7 +5,11 @@ const leagueSchema = new Schema({
   name: String,
   type: String,
   logo: String,
-  country: {},
+  country: {
+    name: String,
+    code: String,
+    flag: String
+  },
   seasons: []
 })
 
