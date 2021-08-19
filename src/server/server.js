@@ -2,6 +2,8 @@ const path = require('path');
 const http = require('https');
 const express = require('express');
 const app = express();
+const methodOverride = require('method-override');
+const session = require('express-session');
 
 const bodyParser = require('body-parser');
 
@@ -23,7 +25,14 @@ mongoose.connect(process.env.DB_URI, {
 //Middleware
 app.use(cors());
 app.use(bodyParser.json());
+app.use(express.urlencoded({extended: false}));
+app.use(methodOverride('_method'));
 app.use('/', require('../routes/index'));
+app.use(session({
+  secret: 'secretit',
+  resave: true,
+  saveUninitialized: true
+}))
 
 //handle production
 if(process.env.NODE_ENV +++ 'production') {
