@@ -10,6 +10,7 @@ const Bet = require('../models/bet');
 const League = require('../models/league');
 const Country = require('../models/country');
 const Fixture = require('../models/fixture');
+const Team = require('../models/team');
 const Live = require('../models/live');
 const Bchprice = require('../models/bchprice');
 
@@ -72,6 +73,12 @@ router.get('/bch', async (req, res) => {
   res.json({ info });
 });
 
+//Serve teams
+router.get('/teams', async (req, res) => {
+  const teams = await Team.find();
+  res.json({ teams });
+});
+
 
 
 
@@ -105,19 +112,19 @@ async function getLives () {
 
 //Get current leagues from api once a week
 async function UpdateLeagues () {
-  var data = await api.api_football('https://api-football-v1.p.rapidapi.com/v3/leagues');
-  data = data.data.response
-  for(x in data){
-    for(y in data[x].seasons){
-      if(data[x].seasons[y].current == true){
+  var leagues = await api.api_football('https://api-football-v1.p.rapidapi.com/v3/leagues');
+  leagues = leagues.data.response
+  for(x in leagues){
+    for(y in leagues[x].seasons){
+      if(leagues[x].seasons[y].current == true){
         // console.log(data[x].league.type, data[x].league.id, data[x].league.name, data[x].country.name)
-        await League.updateOne({league_id:data[x].league.id},{
-          league_id: data[x].league.id,
-          name: data[x].league.name,
-          type: data[x].league.type,
-          logo: data[x].league.logo,
-          country: data[x].country,
-          seasons: data[x].seasons
+        await League.updateOne({league_id:leagues[x].league.id},{
+          league_id: leagues[x].league.id,
+          name: leagues[x].league.name,
+          type: leagues[x].league.type,
+          logo: leagues[x].league.logo,
+          country: leagues[x].country,
+          seasons: leagues[x].seasons
         },{upsert: true})
         .catch((error) => {
           if(error.code == 11000){
@@ -129,6 +136,58 @@ async function UpdateLeagues () {
   }
 }
 // UpdateLeagues ()
+
+async function test (){
+
+
+  // const leagues = await League.find();
+  const countries = await Country.find();
+
+
+  for(var y in countries){
+    if(countries[y].name.charAt(0) == 'S'){
+      var params = {
+        country: countries[y].name
+      }
+      var teams = await api.api_football('https://api-football-v1.p.rapidapi.com/v3/teams', params);
+      for(var x in teams.data.response){
+        await Team.updateOne({id:teams.data.response[x].team.id},{
+          id: teams.data.response[x].team.id,
+          name: teams.data.response[x].team.name,
+          country: teams.data.response[x].team.country,
+          national: teams.data.response[x].team.national,
+          logo: teams.data.response[x].team.logo
+        },{upsert: true})
+        .catch((error) => {
+          if(error.code == 11000){
+            return
+          }
+        })
+      }
+    }
+    console.log('ok')
+  }
+
+  // for(var x in countries){
+    // var country_leagues = []
+    // var country_cups = []
+    // for(var y in leagues){
+    //   if(leagues[y].country.name == countries[x].name){
+    //     if(leagues[y].type == 'League'){
+    //       country_leagues.push(leagues[y].league_id)
+    //     } else if (leagues[y].type == 'Cup') {
+    //       country_cups.push(leagues[y].league_id)
+    //     }
+    //   }
+    // }
+    // await Country.updateOne({name:countries[x].name},{
+    //   leagues: country_leagues,
+    //   cups: country_cups
+    // })
+  // }
+  console.log('fin')
+}
+test()
 
 //Get countries from api once a week
 async function UpdateCountries () {
@@ -149,6 +208,10 @@ async function UpdateCountries () {
 var interval = setInterval(function() { UpdateCountries(); }, 604800000);
 
 
+
+
+
+
 //Get teams from api once a week
 async function UpdateTeams () {
   var params = {
@@ -158,7 +221,7 @@ async function UpdateTeams () {
   var data = await api.api_football('https://api-football-v1.p.rapidapi.com/v3/teams', params);
   console.log(data.data.response)
 }
-UpdateTeams()
+// UpdateTeams()
 
 // var interval = setInterval(function() { UpdateLeagues(); }, 604800000);
 // getLives();
