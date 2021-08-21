@@ -41,11 +41,7 @@ const Bchprice = require('../models/bchprice');
 //   res.json({ leagues });
 // });
 //
-// //Get live games
-// router.get('/live', async (req, res) => {
-//   const livegames = await Live.find();
-//   res.json({ livegames });
-// });
+
 //
 // //Get open bets
 // router.get('/bets', async (req, res) => {
@@ -79,36 +75,14 @@ router.get('/teams', async (req, res) => {
   res.json({ teams });
 });
 
+//Serve live games
+router.get('/lives', async (req, res) => {
+  const livegames = await Live.find();
+  res.json({ livegames });
+});
 
 
 
-async function getLives () {
-  const delit = await Live.deleteMany();
-  const livegames = await api.api_football('https://api-football-v1.p.rapidapi.com/v2/fixtures/live');
-  for (let livegame of livegames.fixtures) {
-    await Live.create({
-      fixture_id: livegame.fixture_id,
-      league_id: livegame.league_id,
-      league: livegame.league,
-      event_date: livegame.event_date,
-      event_timestamp: livegame.event_timestamp,
-      firstHalfStart: livegame.firstHalfStart,
-      secondHalfStart: livegame.secondHalfStart,
-      round: livegame.round,
-      status: livegame.status,
-      statusShort: livegame.statusShort,
-      elapsed: livegame.elapsed,
-      venue: livegame.venue,
-      referee: livegame.referee,
-      homeTeam: livegame.homeTeam,
-      awayTeam: livegame.awayTeam,
-      goalsHomeTeam: livegame.goalsHomeTeam,
-      goalsAwayTeam: livegame.goalsAwayTeam,
-      score: livegame.score
-    })
-  }
-  console.log('Countries updated on DB ✓')
-}
 
 //Get current leagues from api once a week
 async function UpdateLeagues () {
@@ -145,7 +119,7 @@ async function test (){
 
 
   for(var y in countries){
-    if(countries[y].name.charAt(0) == 'R'){
+    if(countries[y].name.charAt(0) == 'G'){
       var params = {
         country: countries[y].name
       }
@@ -223,9 +197,10 @@ async function UpdateTeams () {
 }
 // UpdateTeams()
 
+
+
 // var interval = setInterval(function() { UpdateLeagues(); }, 604800000);
-// getLives();
-// var interval = setInterval(function() { getLives(); }, 1200000);
+
 
 
 module.exports = router;

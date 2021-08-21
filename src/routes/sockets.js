@@ -1,6 +1,7 @@
 const api = require('../apis/apis.js');
 
 const Bchprice = require('../models/bchprice');
+const Live = require('../models/live');
 
 // WebSockets
 const { uuid } = require('uuidv4');
@@ -65,6 +66,7 @@ async function getBchInfo() {
     });
 }
 
+
 //Save bch info to db
 async function saveBchInfo(data) {
   console.log(data.price)
@@ -84,3 +86,54 @@ async function saveBchInfo(data) {
     last_updated: data.last_updated
   })
 }
+
+// Lives //
+//Get live games from api every minute (1400/day)
+async function getLives () {
+  const delit = await Live.deleteMany();
+  const lives = await api.api_football('https://api-football-v1.p.rapidapi.com/v2/fixtures/live');
+  var livegames = lives.data.api.fixtures
+  emitLives(livegames)
+  for (let livegame of livegames) {
+    await Live.create({
+      fixture_id: livegame.fixture_id,
+      league_id: livegame.league_id,
+      league: livegame.league,
+      event_date: livegame.event_date,
+      event_timestamp: livegame.event_timestamp,
+      firstHalfStart: livegame.firstHalfStart,
+      secondHalfStart: livegame.secondHalfStart,
+      round: livegame.round,
+      status: livegame.status,
+      statusShort: livegame.statusShort,
+      elapsed: livegame.elapsed,
+      venue: livegame.venue,
+      referee: livegame.referee,
+      homeTeam: livegame.homeTeam,
+      awayTeam: livegame.awayTeam,
+      goalsHomeTeam: livegame.goalsHomeTeam,
+      goalsAwayTeam: livegame.goalsAwayTeam,
+      score: livegame.score
+    })
+  }
+  console.log('Lives updated on DB ✓')
+}
+
+
+//Emit update live games info event
+async function emitLives(lives) {
+  var packet = [
+    {
+      event: 'lives',
+      data: lives
+    }
+  ]
+  var packet = JSON.stringify(packet)
+  wss.clients.forEach(function each(client) {
+      client.send(packet)
+    });
+}
+
+// getLives();
+// var interval = setInterval(function() { getLives(); }, 60000);
+// var interval = setInterval(function() { getLives(); }, 3600000);
