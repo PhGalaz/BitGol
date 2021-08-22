@@ -119,7 +119,7 @@ async function test (){
 
 
   for(var y in countries){
-    if(countries[y].name.charAt(0) == 'G'){
+    if(countries[y].name.charAt(0) == 'F'){
       var params = {
         country: countries[y].name
       }

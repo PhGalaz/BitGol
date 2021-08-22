@@ -93,6 +93,7 @@ async function getLives () {
   const delit = await Live.deleteMany();
   const lives = await api.api_football('https://api-football-v1.p.rapidapi.com/v2/fixtures/live');
   var livegames = lives.data.api.fixtures
+  console.log('livegames',livegames)
   emitLives(livegames)
   for (let livegame of livegames) {
     await Live.create({
@@ -129,11 +130,13 @@ async function emitLives(lives) {
     }
   ]
   var packet = JSON.stringify(packet)
-  wss.clients.forEach(function each(client) {
-      client.send(packet)
-    });
+  var test = JSON.parse(packet)
+  console.log('test', test)
+  // wss.clients.forEach(function each(client) {
+  //     client.send(packet)
+  //   });
 }
 
-// getLives();
+getLives();
 // var interval = setInterval(function() { getLives(); }, 60000);
 // var interval = setInterval(function() { getLives(); }, 3600000);
