@@ -89,8 +89,8 @@ async function UpdateLeagues () {
   var leagues = await api.api_football('https://api-football-v1.p.rapidapi.com/v3/leagues');
   leagues = leagues.data.response
   for(x in leagues){
-    for(y in leagues[x].seasons){
-      if(leagues[x].seasons[y].current == true){
+    // for(y in leagues[x].seasons){
+      // if(leagues[x].seasons[y].current == true){
         // console.log(data[x].league.type, data[x].league.id, data[x].league.name, data[x].country.name)
         await League.updateOne({league_id:leagues[x].league.id},{
           league_id: leagues[x].league.id,
@@ -105,9 +105,11 @@ async function UpdateLeagues () {
             return
           }
         })
-      }
-    }
+      // }
+    // }
+    // console.log(leagues[x].league.name)
   }
+  console.log('Done updating leagues')
 }
 // UpdateLeagues ()
 
@@ -119,7 +121,7 @@ async function test (){
 
 
   for(var y in countries){
-    if(countries[y].name.charAt(0) == 'F'){
+    if(countries[y].name.charAt(0) == 'A'){
       var params = {
         country: countries[y].name
       }
@@ -139,7 +141,7 @@ async function test (){
         })
       }
     }
-    console.log('ok')
+    // console.log('ok')
   }
 
   // for(var x in countries){
@@ -159,7 +161,7 @@ async function test (){
     //   cups: country_cups
     // })
   // }
-  console.log('fin')
+  // console.log('fin')
 }
 test()
 
@@ -196,6 +198,16 @@ async function UpdateTeams () {
   console.log(data.data.response)
 }
 // UpdateTeams()
+
+//Testing only
+async function Testing () {
+  var params = {
+    id: '3113'
+  }
+  var data = await api.api_football('https://api-football-v1.p.rapidapi.com/v3/leagues', params);
+  console.log(data.data)
+}
+// Testing()
 
 
 

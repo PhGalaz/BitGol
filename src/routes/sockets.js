@@ -93,7 +93,6 @@ async function getLives () {
   const delit = await Live.deleteMany();
   const lives = await api.api_football('https://api-football-v1.p.rapidapi.com/v2/fixtures/live');
   var livegames = lives.data.api.fixtures
-  console.log('livegames',livegames)
   emitLives(livegames)
   for (let livegame of livegames) {
     await Live.create({
