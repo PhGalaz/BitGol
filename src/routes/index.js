@@ -163,7 +163,7 @@ async function test (){
   // }
   // console.log('fin')
 }
-test()
+// test()
 
 //Get countries from api once a week
 async function UpdateCountries () {
