@@ -18,22 +18,23 @@ const Bchprice = require('../models/bchprice');
 // var events = require('events');
 // var emitter = new events.EventEmitter();
 
-// //Create a sample bet for testing purposes
-// router.get('/newbet', async (req, res) => {
-//   const fixture = await Fixture.findOne({fixture_id: 328344});
-//   await Bet.create({
-//     bet_id: faker.random.number(),
-//     init_tx: faker.random.word(),
-//     init_amount: 20000,
-//     taken_amount: 15000,
-//     fixture_id: 328344,
-//     fixture: fixture,
-//     type: 'evslv',
-//     factor: 3,
-//     status: 'open'
-//   });
-//   res.json('new bet created!');
-// });
+//Create a sample bet for testing purposes
+router.get('/newbet', async (req, res) => {
+  const fixture = await Live.findOne({fixture_id: 721776});
+  await Bet.create({
+    bet_id: 457854458,
+    created: new Date(),
+    init_tx: 'hadbvuasvdiyb13873ter7wefbwjbvfwre7yfbwuovw',
+    init_amount: 20000,
+    taken_amount: 15000,
+    fixture_id: 328344,
+    fixture: fixture,
+    type: 'evslv',
+    factor: 3,
+    status: 'open'
+  });
+  res.json('new bet created!');
+});
 //
 // //Get all leagues
 // router.get('/leagues', async (req, res) => {
@@ -43,11 +44,11 @@ const Bchprice = require('../models/bchprice');
 //
 
 //
-// //Get open bets
-// router.get('/bets', async (req, res) => {
-//   const bets = await Bet.find();
-//   res.json({ bets });
-// });
+//Get open bets
+router.get('/bets', async (req, res) => {
+  const bets = await Bet.find();
+  res.json({ bets });
+});
 
 
 // ***routes*** //
