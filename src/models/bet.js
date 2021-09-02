@@ -8,11 +8,11 @@ const betSchema = new Schema({
   init_amount: Number,
   taken_amount: Number,
   fixture_id: Number,
-  fixture:[],
+  fixture: Array,
   type: String,
   factor: Number,
   status: String,
-  users: []
+  users: Array
 })
 
 module.exports = model('bet', betSchema)

@@ -20,7 +20,8 @@ const Bchprice = require('../models/bchprice');
 
 //Create a sample bet for testing purposes
 router.get('/newbet', async (req, res) => {
-  const fixture = await Live.findOne({fixture_id: 721776});
+  const fixture = await Live.findOne({fixture_id: 743292});
+  console.log(fixture)
   await Bet.create({
     bet_id: 457854458,
     created: new Date(),
@@ -185,7 +186,42 @@ async function UpdateCountries () {
 var interval = setInterval(function() { UpdateCountries(); }, 604800000);
 
 
-
+//Get next X fixtures
+async function NextFixtures () {
+  var params = {
+    next: '50'
+  }
+  var data = await api.api_football('https://api-football-v1.p.rapidapi.com/v3/fixtures', params);
+  data = data.data.response
+  for (let fixture of data) {
+    console.log(fixture.fixture.id)
+    await Fixture.create({
+      fixture_id: fixture.fixture.id,
+      league_id: Number,
+      league: [],
+      event_date: Date,
+      event_timestamp: Number,
+      firstHalfStart: Number,
+      secondHalfStart: Number,
+      round: String,
+      status: String,
+      statusShort: String,
+      elapsed: Number,
+      venue: String,
+      referee: String,
+      homeTeam: [],
+      awayTeam: [],
+      goalsHomeTeam: Number,
+      goalsAwayTeam: Number,
+      score: []
+    }).catch((error) => {
+      if(error.code == 11000){
+        return
+      }
+    })
+  }
+}
+NextFixtures()
 
 
 
@@ -196,7 +232,7 @@ async function UpdateTeams () {
     season: '2022'
   }
   var data = await api.api_football('https://api-football-v1.p.rapidapi.com/v3/teams', params);
-  console.log(data.data.response)
+  //console.log(data.data.response)
 }
 // UpdateTeams()
 
@@ -206,7 +242,7 @@ async function Testing () {
     id: '3113'
   }
   var data = await api.api_football('https://api-football-v1.p.rapidapi.com/v3/leagues', params);
-  console.log(data.data)
+  //console.log(data.data)
 }
 // Testing()
 
