@@ -20,10 +20,10 @@ const Bchprice = require('../models/bchprice');
 
 //Create a sample bet for testing purposes
 router.get('/newbet', async (req, res) => {
-  const fixture = await Live.findOne({fixture_id: 743292});
+  const fixture = await Live.findOne({fixture_id: 787460});
   console.log(fixture)
   await Bet.create({
-    bet_id: 457854458,
+    bet_id: 45785333458,
     created: new Date(),
     init_tx: 'hadbvuasvdiyb13873ter7wefbwjbvfwre7yfbwuovw',
     init_amount: 20000,
