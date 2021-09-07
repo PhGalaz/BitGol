@@ -20,18 +20,18 @@ const Bchprice = require('../models/bchprice');
 
 //Create a sample bet for testing purposes
 router.get('/newbet', async (req, res) => {
-  const fixture = await Live.findOne({fixture_id: 787460});
+  const fixture = await Fixture.findOne({fixture_id: 688313});
   console.log(fixture)
   await Bet.create({
-    bet_id: 45785333458,
+    bet_id: 4558,
     created: new Date(),
     init_tx: 'hadbvuasvdiyb13873ter7wefbwjbvfwre7yfbwuovw',
-    init_amount: 20000,
-    taken_amount: 15000,
-    fixture_id: 328344,
+    init_amount: 200000,
+    taken_amount: 45000,
+    fixture_id: 688313,
     fixture: fixture,
-    type: 'evslv',
-    factor: 3,
+    type: 1,
+    factor: 2.1,
     status: 'open'
   });
   res.json('new bet created!');
@@ -167,6 +167,10 @@ async function test (){
 }
 // test()
 
+
+
+
+
 //Get countries from api once a week
 async function UpdateCountries () {
   var data = await api.api_football('https://api-football-v1.p.rapidapi.com/v3/countries');
@@ -186,42 +190,46 @@ async function UpdateCountries () {
 var interval = setInterval(function() { UpdateCountries(); }, 604800000);
 
 
-//Get next X fixtures
+
+
+
+
+
+//Get X fixtures
 async function NextFixtures () {
   var params = {
-    next: '50'
+    league: '265',
+    season: '2021'
   }
   var data = await api.api_football('https://api-football-v1.p.rapidapi.com/v3/fixtures', params);
   data = data.data.response
+  await League.updateOne({league_id:261},{
+    fixtures: data
+  })
   for (let fixture of data) {
-    console.log(fixture.fixture.id)
-    await Fixture.create({
+    await Fixture.updateOne({fixture_id: fixture.fixture.id},{
       fixture_id: fixture.fixture.id,
-      league_id: Number,
-      league: [],
-      event_date: Date,
-      event_timestamp: Number,
-      firstHalfStart: Number,
-      secondHalfStart: Number,
-      round: String,
-      status: String,
-      statusShort: String,
-      elapsed: Number,
-      venue: String,
-      referee: String,
-      homeTeam: [],
-      awayTeam: [],
-      goalsHomeTeam: Number,
-      goalsAwayTeam: Number,
-      score: []
-    }).catch((error) => {
+      league_id: 261,
+      league: fixture.league,
+      event_date: fixture.fixture.date,
+      event_timestamp: fixture.fixture.timestamp,
+      round: fixture.league.round,
+      status: fixture.fixture.status,
+      venue: fixture.fixture.venue,
+      homeTeam: fixture.teams.home,
+      awayTeam: fixture.teams.away,
+      score: fixture.score
+    },{upsert: true})
+    .catch((error) => {
       if(error.code == 11000){
-        return
+        console.log(error)
       }
     })
   }
+  console.log('fin')
 }
 NextFixtures()
+
 
 
 
@@ -235,6 +243,8 @@ async function UpdateTeams () {
   //console.log(data.data.response)
 }
 // UpdateTeams()
+
+
 
 //Testing only
 async function Testing () {

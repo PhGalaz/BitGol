@@ -10,7 +10,8 @@ const leagueSchema = new Schema({
     code: String,
     flag: String
   },
-  seasons: []
+  seasons: [],
+  fixtures: []
 })
 
 module.exports = model('league', leagueSchema)
