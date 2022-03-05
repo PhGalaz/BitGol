@@ -4,6 +4,8 @@ const betSchema = new Schema({
   bet_id: Number,
   created: Date,
   init_user: Number,
+  init_user_name: String,
+  init_user_pic: String,
   init_tx: String,
   init_amount: Number,
   taken_amount: Number,
