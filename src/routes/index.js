@@ -20,18 +20,20 @@ const Bchprice = require('../models/bchprice');
 
 //Create a sample bet for testing purposes
 router.get('/newbet', async (req, res) => {
-  const fixture = await Fixture.findOne({fixture_id: 688239});
+  const fixture = await Fixture.findOne({fixture_id: 707484});
   console.log(fixture)
   await Bet.create({
-    bet_id: 4560,
+    bet_id: 45164,
     created: new Date(),
-    init_tx: 'hadbvuajvdiyb13873ter7wefbwjbvfwre7yfbwuovw',
-    init_amount: 100000000,
-    taken_amount: 175000,
-    fixture_id: 688239,
+    init_tx: 'hadbvuajvsadssayb13873ter7wefbwjbvfwre7yfbwuovw',
+    init_amount: 1200000,
+    taken_amount: 0,
+    fixture_id: 707484,
     fixture: fixture,
-    type: 3,
-    factor: 1.25,
+    type: 1,
+    home_factor: 2.50,
+    draw_factor: 1.00,
+    away_factor: 0.00,
     status: 'open'
   });
   res.json('new bet created!');
@@ -198,18 +200,54 @@ var interval = setInterval(function() { UpdateCountries(); }, 604800000);
 //Get X fixtures
 async function NextFixtures () {
   var params = {
-    league: '265',
-    season: '2021'
+    league: '29',
+    season: '2022'
   }
   var data = await api.api_football('https://api-football-v1.p.rapidapi.com/v3/fixtures', params);
   data = data.data.response
-  await League.updateOne({league_id:261},{
+  console.log(data)
+  // await League.updateOne({league_id:29},{
+  //   fixtures: data
+  // })
+  // for (let fixture of data) {
+  //   await Fixture.updateOne({fixture_id: fixture.fixture.id},{
+  //     fixture_id: fixture.fixture.id,
+  //     league_id: 129,
+  //     league: fixture.league,
+  //     event_date: fixture.fixture.date,
+  //     event_timestamp: fixture.fixture.timestamp,
+  //     round: fixture.league.round,
+  //     status: fixture.fixture.status,
+  //     venue: fixture.fixture.venue,
+  //     homeTeam: fixture.teams.home,
+  //     awayTeam: fixture.teams.away,
+  //     score: fixture.score
+  //   },{upsert: true})
+  //   .catch((error) => {
+  //     if(error.code == 11000){
+  //       console.log(error)
+  //     }
+  //   })
+  // }
+  // console.log('fin')
+}
+// NextFixtures()
+
+router.get('/test', async (req, res) => {
+  var params = {
+    league: '88',
+    season: '2021'
+    // current: true
+  }
+  var data = await api.api_football('https://api-football-v1.p.rapidapi.com/v3/fixtures', params);
+  data = data.data.response
+  await League.updateOne({league_id:88},{
     fixtures: data
   })
   for (let fixture of data) {
     await Fixture.updateOne({fixture_id: fixture.fixture.id},{
       fixture_id: fixture.fixture.id,
-      league_id: 261,
+      league_id: 88,
       league: fixture.league,
       event_date: fixture.fixture.date,
       event_timestamp: fixture.fixture.timestamp,
@@ -227,9 +265,8 @@ async function NextFixtures () {
     })
   }
   console.log('fin')
-}
-NextFixtures()
-
+  res.json(data);
+});
 
 
 
