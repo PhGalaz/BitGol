@@ -1,8 +1,9 @@
+// const faker = require('faker');
+
 require('./sockets');
 
 const { Router } = require('express');
 const router = Router();
-// const faker = require('faker');
 const api = require('../apis/apis.js');
 
 
@@ -18,39 +19,40 @@ const Bchprice = require('../models/bchprice');
 // var events = require('events');
 // var emitter = new events.EventEmitter();
 
+
+
 //Create a sample bet for testing purposes
 router.get('/newbet', async (req, res) => {
-  const fixture = await Fixture.findOne({fixture_id: 707484});
-  console.log(fixture)
-  await Bet.create({
-    bet_id: 45164,
-    created: new Date(),
-    init_tx: 'hadbvuajvsadssayb13873ter7wefbwjbvfwre7yfbwuovw',
-    init_amount: 1200000,
-    taken_amount: 0,
-    fixture_id: 707484,
-    fixture: fixture,
-    type: 1,
-    home_factor: 2.50,
-    draw_factor: 1.00,
-    away_factor: 0.00,
-    status: 'open'
-  });
-  res.json('new bet created!');
-});
-//
-// //Get all leagues
-// router.get('/leagues', async (req, res) => {
-//   const leagues = await League.find();
-//   res.json({ leagues });
-// });
-//
+  // req.query.date
+  const fixture = await Fixture.findOne({fixture_id: 819381});
+  // date = ISODate(fixture.event_date)
 
-//
-//Get open bets
-router.get('/bets', async (req, res) => {
-  const bets = await Bet.find();
-  res.json({ bets });
+  const fixtures = await Fixture.find({
+      event_date: {
+          $gte: "2022-04-01T00:00:00.000Z",
+          $lt: "2022-04-03T00:00:00.000Z"
+      }
+  })
+
+  // date = date.toISOString().split('T')[0]
+  // console.log(fixture)
+  // await Bet.create({
+  //   bet_id: 45578,
+  //   created: Date.now(),
+  //   init_tx: 'f61110c68ed347d60374718fe679a5ed77442e85891d45c407adc1a36253cd10',
+  //   init_amount: 10000000,
+  //   taken_amount: 5950000,
+  //   fixture_id: 819381,
+  //   fixture: fixture,
+  //   type: 1,
+  //   home_factor: 2.00,
+  //   draw_factor: 0.00,
+  //   away_factor: 1.50,
+  //   status: 'open'
+  // });
+  // res.json('new bet created!');
+  // res.json(req.query);
+  res.json(fixtures);
 });
 
 
@@ -85,6 +87,17 @@ router.get('/lives', async (req, res) => {
   res.json({ livegames });
 });
 
+//Serve open bets
+router.get('/bets', async (req, res) => {
+  const bets = await Bet.find();
+  res.json({ bets });
+});
+
+//Serve fixtures
+router.get('/fixtures', async (req, res) => {
+  const fixtures = await Fixture.find();
+  res.json({ fixtures });
+});
 
 
 
@@ -117,9 +130,10 @@ async function UpdateLeagues () {
 }
 // UpdateLeagues ()
 
+
+
+
 async function test (){
-
-
   // const leagues = await League.find();
   const countries = await Country.find();
 
@@ -200,8 +214,12 @@ var interval = setInterval(function() { UpdateCountries(); }, 604800000);
 //Get X fixtures
 async function NextFixtures () {
   var params = {
-    league: '29',
-    season: '2022'
+    // league: '479',
+    // season: '2022'
+    // current: true
+     date: '2022-03-17'
+    // next: '99'
+    // fixture: '830316'
   }
   var data = await api.api_football('https://api-football-v1.p.rapidapi.com/v3/fixtures', params);
   data = data.data.response
@@ -233,39 +251,83 @@ async function NextFixtures () {
 }
 // NextFixtures()
 
+
+
+async function GetFixtures () {
+  let now = new Date().getTime()
+  for (var i = 0; i < 10; i++) {
+    var date = now + (86400000 * i)
+    date = new Date(date)
+    date = date.toISOString().split('T')[0]
+    var params = {
+      date: date
+    }
+    var data = await api.api_football('https://api-football-v1.p.rapidapi.com/v3/fixtures', params);
+    data = data.data.response
+    for (let fixture of data) {
+      await Fixture.updateOne({fixture_id: fixture.fixture.id},{
+        fixture_id: fixture.fixture.id,
+        league_id: 129,
+        league: fixture.league,
+        event_date: fixture.fixture.date,
+        event_timestamp: fixture.fixture.timestamp,
+        round: fixture.league.round,
+        status: fixture.fixture.status,
+        venue: fixture.fixture.venue,
+        homeTeam: fixture.teams.home,
+        awayTeam: fixture.teams.away,
+        score: fixture.score
+      },{upsert: true})
+      .catch((error) => {
+        if(error.code == 11000){
+          console.log(error)
+        }
+      })
+    }
+  }
+}
+// GetFixtures()
+
+
+
 router.get('/test', async (req, res) => {
   var params = {
-    league: '88',
-    season: '2021'
+    // league: '88',
+    // season: '2021'
     // current: true
+     date: '2022-03-01'
+       // from: '2022-03-01',
+       // to: '2022-03-02'
   }
   var data = await api.api_football('https://api-football-v1.p.rapidapi.com/v3/fixtures', params);
   data = data.data.response
-  await League.updateOne({league_id:88},{
-    fixtures: data
-  })
-  for (let fixture of data) {
-    await Fixture.updateOne({fixture_id: fixture.fixture.id},{
-      fixture_id: fixture.fixture.id,
-      league_id: 88,
-      league: fixture.league,
-      event_date: fixture.fixture.date,
-      event_timestamp: fixture.fixture.timestamp,
-      round: fixture.league.round,
-      status: fixture.fixture.status,
-      venue: fixture.fixture.venue,
-      homeTeam: fixture.teams.home,
-      awayTeam: fixture.teams.away,
-      score: fixture.score
-    },{upsert: true})
-    .catch((error) => {
-      if(error.code == 11000){
-        console.log(error)
-      }
-    })
-  }
-  console.log('fin')
-  res.json(data);
+
+  // await League.updateOne({league_id:88},{
+  //   fixtures: data
+  // })
+  // for (let fixture of data) {
+  //   await Fixture.updateOne({fixture_id: fixture.fixture.id},{
+  //     fixture_id: fixture.fixture.id,
+  //     league_id: 88,
+  //     league: fixture.league,
+  //     event_date: fixture.fixture.date,
+  //     event_timestamp: fixture.fixture.timestamp,
+  //     round: fixture.league.round,
+  //     status: fixture.fixture.status,
+  //     venue: fixture.fixture.venue,
+  //     homeTeam: fixture.teams.home,
+  //     awayTeam: fixture.teams.away,
+  //     score: fixture.score
+  //   },{upsert: true})
+  //   .catch((error) => {
+  //     if(error.code == 11000){
+  //       console.log(error)
+  //     }
+  //   })
+  // }
+  // console.log('fin')
+  // res.json(yourDate.toISOString().split('T')[0])
+  // res.json(yourDate)
 });
 
 

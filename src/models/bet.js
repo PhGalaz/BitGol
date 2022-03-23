@@ -2,7 +2,7 @@ const { Schema, model } = require('mongoose');
 
 const betSchema = new Schema({
   bet_id: Number,
-  created: Date,
+  created: Number,
   init_user: Number,
   init_user_name: String,
   init_user_pic: String,
