@@ -23,36 +23,23 @@ const Bchprice = require('../models/bchprice');
 
 //Create a sample bet for testing purposes
 router.get('/newbet', async (req, res) => {
-  // req.query.date
-  const fixture = await Fixture.findOne({fixture_id: 819381});
-  // date = ISODate(fixture.event_date)
-
-  const fixtures = await Fixture.find({
-      event_date: {
-          $gte: "2022-04-01T00:00:00.000Z",
-          $lt: "2022-04-03T00:00:00.000Z"
-      }
-  })
-
-  // date = date.toISOString().split('T')[0]
-  // console.log(fixture)
-  // await Bet.create({
-  //   bet_id: 45578,
-  //   created: Date.now(),
-  //   init_tx: 'f61110c68ed347d60374718fe679a5ed77442e85891d45c407adc1a36253cd10',
-  //   init_amount: 10000000,
-  //   taken_amount: 5950000,
-  //   fixture_id: 819381,
-  //   fixture: fixture,
-  //   type: 1,
-  //   home_factor: 2.00,
-  //   draw_factor: 0.00,
-  //   away_factor: 1.50,
-  //   status: 'open'
-  // });
-  // res.json('new bet created!');
-  // res.json(req.query);
-  res.json(fixtures);
+  const fixture = await Fixture.findOne({fixture_id: 293658});
+  console.log(fixture)
+  await Bet.create({
+    bet_id: 53371,
+    created: Date.now(),
+    init_tx: 'f61110c68ed347d60374718fe679a5ed77442e85891456c407adc1a36253cd10',
+    init_amount: 20000000,
+    taken_amount: 706000,
+    fixture_id: 293658,
+    fixture: fixture,
+    type: 011,
+    home_factor: 0.00,
+    draw_factor: 3.00,
+    away_factor: 6.00,
+    status: 'open'
+  });
+  res.json('new bet created!');
 });
 
 
@@ -95,7 +82,13 @@ router.get('/bets', async (req, res) => {
 
 //Serve fixtures
 router.get('/fixtures', async (req, res) => {
-  const fixtures = await Fixture.find();
+  // const fixtures = await Fixture.find();
+  const fixtures = await Fixture.find({
+      event_date: {
+          $gte: "2022-03-24T00:00:00.000Z",
+          $lt: "2022-03-25T00:00:00.000Z"
+      }
+  })
   res.json({ fixtures });
 });
 
