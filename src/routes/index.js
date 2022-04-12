@@ -23,20 +23,20 @@ const Bchprice = require('../models/bchprice');
 
 //Create a sample bet for testing purposes
 router.get('/newbet', async (req, res) => {
-  const fixture = await Fixture.findOne({fixture_id: 293658});
+  const fixture = await Fixture.findOne({fixture_id: 293657});
   console.log(fixture)
   await Bet.create({
-    bet_id: 53371,
+    bet_id: 88891,
     created: Date.now(),
-    init_tx: 'f61110c68ed347d60374718fe679a5ed77442e85891456c407adc1a36253cd10',
-    init_amount: 20000000,
-    taken_amount: 706000,
-    fixture_id: 293658,
+    init_tx: 'f61910c68ed347d60374718fe679a5ajshvjdvsgjsa6c407adc1a36257cd10',
+    init_amount: 900000,
+    taken_amount: 806000,
+    fixture_id: 293657,
     fixture: fixture,
     type: 011,
     home_factor: 0.00,
-    draw_factor: 3.00,
-    away_factor: 6.00,
+    draw_factor: 1.00,
+    away_factor: 5.00,
     status: 'open'
   });
   res.json('new bet created!');
