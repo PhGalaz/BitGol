@@ -80,6 +80,41 @@ router.get('/bets', async (req, res) => {
   res.json({ bets });
 });
 
+//Serve specific fixture by id
+router.get('/fixture/:id', async (req, res) => {
+  let fixture = await Fixture.findOne({ fixture_id: req.params.id })
+  // if(fixture == null){
+  //   console.log('Llamada!!!!')
+  //   fixture = await api.api_football('https://api-football-v1.p.rapidapi.com/v3/fixtures', {
+  //     id: req.params.id
+  //   });
+  //   fixture = fixture.data.response
+  //   if(fixture.length){
+  //     res.json({ fixture })
+  //   } else {
+  //     await Fixture.updateOne({ fixture_id: req.params.id }, {
+  //       fixture_id: fixture[0].fixture.id,
+  //       league_id: fixture[0].league.id,
+  //       league: fixture[0].league,
+  //       event_date: fixture[0].fixture.date,
+  //       event_timestamp: fixture[0].fixture.timestamp,
+  //       round: fixture[0].league.round,
+  //       status: fixture[0].fixture.status,
+  //       venue: fixture[0].fixture.venue,
+  //       homeTeam: fixture[0].teams.home,
+  //       awayTeam: fixture[0].teams.away,
+  //       score: fixture[0].score
+  //     },{upsert: true});
+  //     res.send('Fixture does not exist')
+  //   }
+  // } else if(fixture[0].fixture.id != null) {
+  //   res.json({ fixture })
+  // } else {
+  //   res.send('Fixture does not exist')
+  // }
+  res.json({ fixture })
+}); 
+
 //Serve fixtures
 router.get('/fixtures', async (req, res) => {
   // const fixtures = await Fixture.find();
