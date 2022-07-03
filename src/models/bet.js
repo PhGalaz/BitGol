@@ -10,7 +10,6 @@ const betSchema = new Schema({
   init_amount: Number,
   taken_amount: Number,
   fixture_id: Number,
-  fixture: Array,
   type: Number,
   home_factor: Number,
   draw_factor: Number,

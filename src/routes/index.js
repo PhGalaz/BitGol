@@ -32,7 +32,6 @@ router.get('/newbet', async (req, res) => {
     init_amount: 900000,
     taken_amount: 806000,
     fixture_id: 293657,
-    fixture: fixture,
     type: 011,
     home_factor: 0.00,
     draw_factor: 1.00,
@@ -43,7 +42,15 @@ router.get('/newbet', async (req, res) => {
 });
 
 
+
+
+
+
+
+
+
 // ***routes*** //
+
 //Serve countries
 router.get('/countries', async (req, res) => {
   const countries = await Country.find();
@@ -82,36 +89,9 @@ router.get('/bets', async (req, res) => {
 
 //Serve specific fixture by id
 router.get('/fixture/:id', async (req, res) => {
-  let fixture = await Fixture.findOne({ fixture_id: req.params.id })
-  // if(fixture == null){
-  //   console.log('Llamada!!!!')
-  //   fixture = await api.api_football('https://api-football-v1.p.rapidapi.com/v3/fixtures', {
-  //     id: req.params.id
-  //   });
-  //   fixture = fixture.data.response
-  //   if(fixture.length){
-  //     res.json({ fixture })
-  //   } else {
-  //     await Fixture.updateOne({ fixture_id: req.params.id }, {
-  //       fixture_id: fixture[0].fixture.id,
-  //       league_id: fixture[0].league.id,
-  //       league: fixture[0].league,
-  //       event_date: fixture[0].fixture.date,
-  //       event_timestamp: fixture[0].fixture.timestamp,
-  //       round: fixture[0].league.round,
-  //       status: fixture[0].fixture.status,
-  //       venue: fixture[0].fixture.venue,
-  //       homeTeam: fixture[0].teams.home,
-  //       awayTeam: fixture[0].teams.away,
-  //       score: fixture[0].score
-  //     },{upsert: true});
-  //     res.send('Fixture does not exist')
-  //   }
-  // } else if(fixture[0].fixture.id != null) {
-  //   res.json({ fixture })
-  // } else {
-  //   res.send('Fixture does not exist')
-  // }
+  let fixture = await Fixture.findOne({ fixture_id: req.params.id }).lean()
+  // let bets = await Bet.find({ fixture_id: req.params.id })
+  // fixture.bets = bets
   res.json({ fixture })
 }); 
 
@@ -126,6 +106,14 @@ router.get('/fixtures', async (req, res) => {
   })
   res.json({ fixtures });
 });
+
+
+
+
+
+
+
+
 
 
 
@@ -295,7 +283,7 @@ async function GetFixtures () {
     for (let fixture of data) {
       await Fixture.updateOne({fixture_id: fixture.fixture.id},{
         fixture_id: fixture.fixture.id,
-        league_id: 129,
+        league_id: fixture.league.id,
         league: fixture.league,
         event_date: fixture.fixture.date,
         event_timestamp: fixture.fixture.timestamp,
