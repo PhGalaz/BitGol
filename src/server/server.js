@@ -19,8 +19,8 @@ mongoose.connect(process.env.DB_URI, {
   useUnifiedTopology: true,
   useCreateIndex: true
 })
-  .then(() => console.log('DB connected'))
-  .catch(e => console.log(e));
+.then(() => console.log('DB connected'))
+.catch(e => console.log(e));
 
 
 
