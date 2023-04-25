@@ -1,0 +1,15 @@
+{
+	"folders": [
+		{
+			"name": "bitgol-backend",
+			"path": "."
+		},
+		{
+			"name": "bitgol-frontend",
+			"path": "../bitgol-frontend"
+		}
+	],
+	"settings": {
+		"vue.features.codeActions.enable": false
+	}
+}
