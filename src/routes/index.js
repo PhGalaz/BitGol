@@ -1,5 +1,3 @@
-// const faker = require('faker');
-
 require('./sockets');
 
 const { Router } = require('express');
@@ -9,11 +7,11 @@ const api = require('../apis/apis.js');
 
 const Bet = require('../models/bet');
 const League = require('../models/league');
-const Country = require('../models/country');
+const Country = require('../models/country.ts');
 const Fixture = require('../models/fixture');
 const Team = require('../models/team');
 const Live = require('../models/live');
-const Bchprice = require('../models/bchprice');
+const Bchprice = require('../models/bchIndex');
 
 
 // var events = require('events');
