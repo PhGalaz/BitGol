@@ -1,9 +1,9 @@
 import { updateIndex, indexTask } from './index.cron';
-import { updateLives, livesTask } from './lives.cron';
+// import { updateLives, livesTask } from './lives.cron';
 
 export const runCron = () => {
     updateIndex();
-    updateLives();
+    // updateLives();
     indexTask.start();
-    livesTask.start();
+    // livesTask.start();
 }

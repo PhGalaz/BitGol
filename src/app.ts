@@ -54,11 +54,13 @@ const swaggerDocs = swaggerJsDoc({
 //DB connections
 async function connectDB() {
   try {
+    console.log('Connecting to MongoDB...');
     const db = await connect(process.env.DB_URI!);
     console.log('MongoDB Connected...', db.connection.db.databaseName);
     runCron();
   } catch (err) {
     console.error(err);
+    connectDB();
   }
 }
 connectDB();

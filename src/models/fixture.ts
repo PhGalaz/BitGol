@@ -1,8 +1,8 @@
 import { prop, getModelForClass } from '@typegoose/typegoose';
 
 class Fixture {
-    @prop({ required: true, unique: true })    // mongoose
-    fixture_id: number;                        // typescript
+    @prop({ required: true, unique: true })
+    fixture_id: number;    
     
     @prop()
     league_id: number;
@@ -17,7 +17,7 @@ class Fixture {
     round: string;
 
     @prop()
-    status: [];
+    status: string;
 
     @prop()
     venue: [];

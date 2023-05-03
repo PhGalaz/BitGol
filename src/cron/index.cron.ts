@@ -3,7 +3,7 @@ import { ApiCmc } from '../utils/axios';
 import BchPriceModel from '../models/bchIndex';
 import { wss } from '../config/ws.config';
 
-export const indexTask = cron.schedule('*/20 * * * *', () => {
+export const indexTask = cron.schedule('*/5 * * * *', () => {
     updateIndex();
 });
 
