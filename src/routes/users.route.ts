@@ -91,7 +91,7 @@ const usersRoute = Router();
 usersRoute.post(
     '/signup/users',
     usersValidator.userFields,
-    // usersValidator.validateIfEmailExists,
+    usersValidator.validateIfEmailExists,
     validateRequest,
     usersController.signUpUser
 );
@@ -184,5 +184,58 @@ usersRoute.patch(
     usersController.confirmAccountUser
 );
 
+/**
+ * @swagger
+ * /users/login:
+ *  post:
+ *    description: Login user
+ *    tags:
+ *      - Users
+ *    produces:
+ *      - application/json
+ *    parameters:
+ *      - in: body
+ *        name: body
+ *        description: "Login fields"
+ *        required: true
+ *        schema:
+ *          $ref: "#/definitions/login"
+ *    responses:
+ *     200:
+ *      description: login success
+ *      examples:
+ *       application/json: {
+ *        "token": am1m0m01m0m1f89784g12ged798hgj9dsda
+ *       }
+ *     400:
+ *        schema:
+ *          type: object
+ *          properties:
+ *            errors:
+ *              type: object
+ *        examples:
+ *          application/json: {
+ *            "errors": [
+ *                 "message": "Incorrect password"
+ *             ],
+ *          }
+ * definitions:
+ *   login:
+ *     type: object
+ *     properties:
+ *       email:
+ *         type: string
+ *         required: true
+ *       password:
+ *         type: string
+ *         required: true
+ */
+usersRoute.post(
+    '/login',
+    usersValidator.login,
+    usersValidator.validateCredentials,
+    validateRequest,
+    usersController.login
+);
 
 export default usersRoute;

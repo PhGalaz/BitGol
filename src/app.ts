@@ -70,7 +70,7 @@ const app = express();
 // middleware
 app.set('trust proxy', true);
 app.use(express.json());
-app.use(morgan('combined'));
+app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(

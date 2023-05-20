@@ -5,6 +5,7 @@ import bcrypt from 'bcrypt';
 import crypto from 'crypto';
 import dayjs from 'dayjs';
 import { InternalError } from "../errors";
+import jwt from 'jsonwebtoken';
 
 
 class UserController extends BaseController {
@@ -29,6 +30,20 @@ class UserController extends BaseController {
             const { token, userId } = req.body;
             const confirmedUser = await userService.confirmAccountUser(token, userId);
             res.status(200).send(confirmedUser);
+        } catch (error) {
+            console.log(error);
+            throw new InternalError();
+        }
+    };
+
+    public login = async (req: Request, res: Response) => {
+        try {
+            const { email } = req.body;
+            const user = await userService.findUserByEmail(email);
+            const userJwt = jwt.sign({ id: user!.id }, process.env.JWT_KEY!, {
+                expiresIn: process.env.JWT_EXPIRATION_TIME
+            });
+            res.status(200).send({ token: userJwt });
         } catch (error) {
             console.log(error);
             throw new InternalError();

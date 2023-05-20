@@ -43,10 +43,6 @@ const userService = {
 
     async confirmAccountUser (token: string, userId: string) {
         const user = await UserModel.findById(userId);
-        // const user = await this.db.users.findFirst({
-        //     where: { id: parseInt(userId), role_id: 1 },
-        //     include: { client: true }
-        // });
         if ( !user || user.deleted ) throw new NotFoundError();
         if (token !== user.token) throw new BadRequestError('Token not valid');
         if (user.status_id !== 1) throw new BadRequestError('User account was already verified');
@@ -63,6 +59,12 @@ const userService = {
         //     process.env.URL_BASE_FRONTEND_CLIENT!
         // );
         return updatedUser;
+    },
+
+    async findUserByEmail (email: string) {
+        const user = await UserModel.findOne({ email: email });
+        if (!user) throw new BadRequestError('Email not registered');
+        return user;
     }
 }
 

@@ -7,9 +7,7 @@ const start = async () => {
   // }
   const PORT = process.env.PORT;
 
-  if (!PORT) {
-    throw new Error('Port must be defined')
-  }
+  if (!PORT) throw new Error('Port must be defined');
 
   try {
     httpServer.listen(PORT, () => {
