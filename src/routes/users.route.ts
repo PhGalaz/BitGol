@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import UserController from '../controllers/users.controller';
-import { validateRequest } from '../middlewares';
+import { validateRequest, currentUser } from '../middlewares';
 import UsersValidator from '../validators/users.validator';
 
 const usersController = new UserController();
@@ -236,6 +236,104 @@ usersRoute.post(
     usersValidator.validateCredentials,
     validateRequest,
     usersController.login
+);
+
+/**
+ * @swagger
+ * /users/current-user:
+ *  get:
+ *    description: Get current user by token
+ *    tags:
+ *      - Users
+ *    security:
+ *     - bearerAuth: []
+ *    responses:
+ *     200:
+ *       description: decrypted token success
+ *       examples:
+ *        application/json: {
+ *         "currentUser": {
+ *             "id": 1,
+ *             "name": "jose carkis",
+ *             "last_name": "barrega",
+ *             "maternal_name": "",
+ *             "avatar": null,
+ *             "email": "jose.barriga@loop.com",
+ *             "phone": null,
+ *             "role": {
+ *                 "id": 1,
+ *                 "name": "Client"
+ *             },
+ *             "status": {
+ *                 "id": 2,
+ *                 "name": "Activo"
+ *             },
+ *             "client": {
+ *                 "id": 1,
+ *                 "address": null,
+ *                 "zip_code": null,
+ *                 "birthday": null,
+ *                 "gender": null
+ *             },
+ *             "producer": null,
+ *             "iat": 1624240334,
+ *             "exp": 1624845134
+ *           }
+ *         }
+ *     404:
+ *       description: decrypted token not founded
+ *       schema:
+ *         type: object
+ *         properties:
+ *           errors:
+ *             type: object
+ *       examples:
+ *         application/json: {
+ *           "currentUser": null
+ *         }
+ *
+ */
+usersRoute.get(
+    '/current-user',
+    // currentUser,
+    usersController.current
+);
+
+/**
+ * @swagger
+ * /users/logout:
+ *  get:
+ *    description: Logout user (client and producer) by sending token
+ *    tags:
+ *      - Users
+ *    security:
+ *     - bearerAuth: []
+ *    produces:
+ *      - application/json
+ *    responses:
+ *     200:
+ *      description: logout success
+ *      examples:
+ *       application/json: {
+ *        "token": null
+ *       }
+ *     400:
+ *        schema:
+ *          type: object
+ *          properties:
+ *            errors:
+ *              type: object
+ *        examples:
+ *          application/json: {
+ *            "errors": [
+ *                 "message": "token not sent"
+ *             ],
+ *          }
+ */
+usersRoute.delete(
+    '/logout',
+    currentUser,
+    usersController.logout
 );
 
 export default usersRoute;

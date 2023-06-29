@@ -18,7 +18,13 @@ class User {
     role_id!: number;
 
     @prop()
-    token!: string;
+    token: string;
+
+    @prop()
+    avatar: string;
+
+    @prop()
+    facebook_id: string;
 
     @prop()
     status_id!: number;

@@ -58,6 +58,7 @@ class UsersValidator extends BaseValidator {
 			next: NextFunction
 		) => {
 			const { email, password } = req.body;
+      console.log('email', email);
 			const user = await UserModel.findOne({ email: email });
 			if (!user) throw new BadRequestError('Email not registered');
 			if (user.status_id === 1) throw new BadRequestError('Your account is not verified, please check your email and click the link in the message to complete the verification of your account. Have you not received the email?');

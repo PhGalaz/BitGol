@@ -62,8 +62,14 @@ const userService = {
     },
 
     async findUserByEmail (email: string) {
-        const user = await UserModel.findOne({ email: email });
+        const user = await UserModel.findOne({ email: email }, { password: 0, token: 0 });
         if (!user) throw new BadRequestError('Email not registered');
+        return user;
+    },
+
+    async findUserById (id: number) {
+        const user = await UserModel.findById(id);
+        if (!user) throw new NotFoundError();
         return user;
     }
 }

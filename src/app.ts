@@ -12,9 +12,29 @@ import swaggerUi from 'swagger-ui-express';
 // import { init } from './config/socket.config'
 // import { initEvent } from './config/events.config'
 import { connect } from 'mongoose';
-import { runCron } from './cron'
+import { runCron } from './cron';
+import session from 'express-session';
+import { createClient } from 'redis';
+import RedisStore from "connect-redis"
+
 require('./config/ws.config');
 require('dotenv').config({ path: './.env'});
+
+declare module 'express-session' {
+  export interface SessionData {
+    user: { [key: string]: any };
+  }
+}
+
+// Initialize redis client.
+const redisClient = createClient()
+redisClient.connect().catch(console.error)
+
+// Initialize redis store.
+const redisStore = new RedisStore({
+  client: redisClient,
+  prefix: "myapp:",
+})
 
 const swaggerDocs = swaggerJsDoc({
   swaggerDefinition: {
@@ -42,9 +62,7 @@ const swaggerDocs = swaggerJsDoc({
         name: 'Authorization',
         scheme: 'Bearer',
         description:
-          'For accessing the API a valid JWT token must be passed in all the queries in the Authorization header.' +
-          'The following syntax must be used in the Authorization header :' +
-          'Bearer xxxxxx.yyyyyyy.zzzzzz'
+          'Some description'
       }
     }
   },
@@ -67,16 +85,30 @@ connectDB();
 
 const app = express();
 
-// middleware
-app.set('trust proxy', true);
+// middlewares
+app.set('trust proxy', true); // trust first proxy
 app.use(express.json());
 app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+app.use(cors({
+  origin: process.env.CLIENT_URL,
+  credentials: true
+}));
 app.use(
   '/api/v2/public',
   express.static(path.join(__dirname, '/public'))
 );
+app.use(session({
+  store: redisStore,
+  secret: process.env.SESSION_SECRET!,
+  resave: false,
+  saveUninitialized: false,
+  cookie: { 
+    secure: false, // Always TRUE in production !!! 
+    httpOnly: true,
+    maxAge: 1000 * 60 * 60 * 24 * .15 // 4 hours
+  }
+}))
 
 // swagger
 app.get('/swagger.json', function (_req, res) {

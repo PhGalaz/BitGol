@@ -4,8 +4,7 @@ import userService from "../services/user.service";
 import bcrypt from 'bcrypt';
 import crypto from 'crypto';
 import dayjs from 'dayjs';
-import { InternalError } from "../errors";
-import jwt from 'jsonwebtoken';
+import { InternalError, BadRequestError } from "../errors";
 
 
 class UserController extends BaseController {
@@ -37,18 +36,31 @@ class UserController extends BaseController {
     };
 
     public login = async (req: Request, res: Response) => {
+        console.log('req.COOKIES:', req.cookies);
         try {
             const { email } = req.body;
-            const user = await userService.findUserByEmail(email);
-            const userJwt = jwt.sign({ id: user!.id }, process.env.JWT_KEY!, {
-                expiresIn: process.env.JWT_EXPIRATION_TIME
-            });
-            res.status(200).send({ token: userJwt });
+            req.session.user = await userService.findUserByEmail(email);;
+            res.json({ user: req.session.user });
         } catch (error) {
             console.log(error);
             throw new InternalError();
         }
     };
+
+    public current = async (req: Request, res: Response) => {
+        console.log(req.headers.cookie);
+        if (!req.session.user) res.status(404).send({ currentUser: null });
+        const user: any = req.session.user;
+        res.send({ currentUser: user || null });
+    };
+
+    public logout = async (req: Request, res: Response) => {
+        req.session.destroy((err) => {
+            if (err) throw new BadRequestError('Error destroying session');
+        });
+        res.status(200).send('Session logged out');
+    };
+
 }
 
 export default UserController;
