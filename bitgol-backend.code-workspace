@@ -7,6 +7,9 @@
 		{
 			"name": "bitgol-frontend",
 			"path": "../bitgol-frontend"
+		},
+		{
+			"path": "../bitgol-nuxt3"
 		}
 	],
 	"settings": {

@@ -39,7 +39,8 @@ class UserController extends BaseController {
         console.log('req.COOKIES:', req.cookies);
         try {
             const { email } = req.body;
-            req.session.user = await userService.findUserByEmail(email);;
+            req.session.user = await userService.findUserByEmail(email);
+            console.log('Header: ', res.header);
             res.json({ user: req.session.user });
         } catch (error) {
             console.log(error);
@@ -48,13 +49,19 @@ class UserController extends BaseController {
     };
 
     public current = async (req: Request, res: Response) => {
-        console.log(req.headers.cookie);
-        if (!req.session.user) res.status(404).send({ currentUser: null });
-        const user: any = req.session.user;
-        res.send({ currentUser: user || null });
+        // console.log('current user req headers: ', req.headers);
+        // console.log('current user req cookies: ', req.headers.cookie);
+        // console.log('req.cookies: ', req.cookies);
+        if (!req.session.user) {
+            res.status(404).send({ currentUser: null });
+        } else {
+            const user: any = req.session.user;
+            res.send({ currentUser: user || null });
+        }
     };
 
     public logout = async (req: Request, res: Response) => {
+        console.log('logout req.session: ', req.session);
         req.session.destroy((err) => {
             if (err) throw new BadRequestError('Error destroying session');
         });

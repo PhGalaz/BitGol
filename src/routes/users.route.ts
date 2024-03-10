@@ -302,7 +302,7 @@ usersRoute.get(
 /**
  * @swagger
  * /users/logout:
- *  get:
+ *  delete:
  *    description: Logout user (client and producer) by sending token
  *    tags:
  *      - Users

@@ -1,4 +1,5 @@
 import express, { Response, Request } from 'express';
+import cookieParser from 'cookie-parser';
 import 'express-async-errors';
 import morgan from 'morgan';
 import cors from 'cors';
@@ -87,6 +88,7 @@ const app = express();
 
 // middlewares
 app.set('trust proxy', true); // trust first proxy
+app.use(cookieParser());
 app.use(express.json());
 app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: true }));
