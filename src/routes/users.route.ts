@@ -295,7 +295,7 @@ usersRoute.post(
  */
 usersRoute.get(
     '/current-user',
-    // currentUser,
+    currentUser,
     usersController.current
 );
 

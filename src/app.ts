@@ -37,39 +37,6 @@ const redisStore = new RedisStore({
   prefix: "myapp:",
 })
 
-const swaggerDocs = swaggerJsDoc({
-  swaggerDefinition: {
-    info: {
-      title: 'BitGol API',
-      description: 'BitGol API Information',
-      version: '1.0',
-      contact: {
-        name: 'Felipe Galaz',
-        email: 'felipe@galaz.de',
-        url: 'www.galaz.de'
-      },
-      servers: [
-        {
-          url: process.env.PORT,
-          name: 'test'
-        }
-      ]
-    },
-    basePath: '/api/v2',
-    securityDefinitions: {
-      bearerAuth: {
-        type: 'apiKey',
-        in: 'header',
-        name: 'Authorization',
-        scheme: 'Bearer',
-        description:
-          'Some description'
-      }
-    }
-  },
-  apis: ['src/routes/*.ts']
-});
-
 //DB connections
 async function connectDB() {
   try {
@@ -113,6 +80,38 @@ app.use(session({
 }))
 
 // swagger
+const swaggerDocs = swaggerJsDoc({
+  swaggerDefinition: {
+    info: {
+      title: 'BitGol API',
+      description: 'BitGol API Information',
+      version: '1.0',
+      contact: {
+        name: 'Felipe Galaz',
+        email: 'felipe@galaz.de',
+        url: 'www.galaz.de'
+      },
+      servers: [
+        {
+          url: process.env.PORT,
+          name: 'test'
+        }
+      ]
+    },
+    basePath: '/api/v2',
+    securityDefinitions: {
+      bearerAuth: {
+        type: 'apiKey',
+        in: 'header',
+        name: 'Authorization',
+        scheme: 'Bearer',
+        description:
+          'Some description'
+      }
+    }
+  },
+  apis: ['src/routes/*.ts']
+});
 app.get('/swagger.json', function (_req, res) {
   res.setHeader('Content-Type', 'application/json');
   res.send(swaggerDocs);
@@ -121,8 +120,8 @@ app.use(
   '/swagger',
   swaggerUi.serve,
   swaggerUi.setup(swaggerDocs)
-);
-
+  );
+  
 app.use('/api/v2', mainRoute);
 
 app.all('*', (_req: Request, _res: Response) => {
@@ -137,3 +136,4 @@ const httpServer = createServer(app);
 // const eventEmitter = getEvent();
 // eventEmitter.emit('event');
 export { httpServer };
+  

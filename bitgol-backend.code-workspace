@@ -5,10 +5,11 @@
 			"path": "."
 		},
 		{
-			"name": "bitgol-frontend",
-			"path": "../bitgol-frontend"
+			"name": "bitgol-frontend(OLD)",
+			"path": "../bitgol-frontend(OLD)"
 		},
 		{
+			"name": "bitgol-nuxt3",
 			"path": "../bitgol-nuxt3"
 		}
 	],

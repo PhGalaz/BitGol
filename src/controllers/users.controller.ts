@@ -49,9 +49,7 @@ class UserController extends BaseController {
     };
 
     public current = async (req: Request, res: Response) => {
-        // console.log('current user req headers: ', req.headers);
-        // console.log('current user req cookies: ', req.headers.cookie);
-        // console.log('req.cookies: ', req.cookies);
+        console.log('req.COOKIES:', req.cookies);
         if (!req.session.user) {
             res.status(404).send({ currentUser: null });
         } else {
@@ -61,7 +59,7 @@ class UserController extends BaseController {
     };
 
     public logout = async (req: Request, res: Response) => {
-        console.log('logout req.session: ', req.session);
+        console.log('req.COOKIES:', req.cookies);
         req.session.destroy((err) => {
             if (err) throw new BadRequestError('Error destroying session');
         });
