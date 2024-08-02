@@ -39,6 +39,12 @@ class Bet {
 
   @prop()
   users: [];
+
+  @prop()
+  user: number;
+
+  @prop()
+  funding_address: string;
 }
 
 const BetModel = getModelForClass(Bet);

@@ -14,6 +14,7 @@
 		}
 	],
 	"settings": {
-		"vue.features.codeActions.enable": false
+		"vue.features.codeActions.enable": false,
+		"workbench.colorTheme": "Eden"
 	}
 }

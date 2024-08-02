@@ -10,7 +10,12 @@ wss.on("connection", (ws) => {
     const metadata = { id, color };
   
     clients.set(ws, metadata);
+    console.log("New client connected");
     console.log(metadata);
+
+    // Send the ID back to the client
+    ws.send(JSON.stringify([{ event: 'connected', id, color }]));
+
     ws.on('message', (data: string) => {
         const message = JSON.parse(data);
         const metadata = clients.get(ws);
