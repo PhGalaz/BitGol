@@ -1,4 +1,5 @@
 export interface IBetCreationRequest {
+    fixture_id: number;
     home: number;
     draw: number;
     away: number;
@@ -6,12 +7,13 @@ export interface IBetCreationRequest {
     user_id: number | null;
     status: number;
     createdAt: string;
-    funding_address: string;
   }
-
+  
   export interface IBet extends IBetCreationRequest {
     id: number;
     open_amount: number;
+    funding_address: string;
+    taking_address: string;
   }
   
   declare global {

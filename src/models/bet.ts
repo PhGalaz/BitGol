@@ -2,7 +2,7 @@ import { prop, getModelForClass } from '@typegoose/typegoose';
 
 class Bet {
   @prop({ required: true, unique: true })   // mongoose
-  bet_id: number;                           // typescript
+  id: number;                               // typescript
 
   @prop()
   created: Date;
@@ -45,6 +45,9 @@ class Bet {
 
   @prop()
   funding_address: string;
+
+  @prop()
+  taking_address: string;
 }
 
 const BetModel = getModelForClass(Bet);

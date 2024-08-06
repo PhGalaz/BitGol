@@ -1,6 +1,9 @@
 {
     "compilerOptions": {
-        "module": "commonjs",
+        "module": "CommonJS",
+        "target": "ESNext",
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
         "sourceMap": true,
         "rootDir": "./src",  
         "outDir": "./build",
@@ -18,7 +21,6 @@
         "moduleResolution": "node",
         "noImplicitThis": true,                
         "alwaysStrict": true,
-        "target": "es6",   
         "experimentalDecorators": true,
         "lib": ["esnext"],
         "baseUrl": "./", 
@@ -27,8 +29,7 @@
                 "node_modules/*",
             ]
         }, 
-        "types": ["node", "jest"],   
-        "esModuleInterop": true,
+        "types": ["node", "jest"],
         "skipLibCheck": true,                    
         "forceConsistentCasingInFileNames": true,
         "typeRoots": ["./types", "./node_modules/@types"]

@@ -24,13 +24,13 @@ router.get('/newbet', async (req, res) => {
   const fixture = await Fixture.findOne({fixture_id: 293657});
   console.log(fixture)
   await Bet.create({
-    bet_id: 88891,
+    id: 88891,
     created: Date.now(),
     init_tx: 'f61910c68ed347d60374718fe679a5ajshvjdvsgjsa6c407adc1a36257cd10',
     init_amount: 900000,
     taken_amount: 806000,
     fixture_id: 293657,
-    type: 011,
+    type: 321,
     home_factor: 0.00,
     draw_factor: 1.00,
     away_factor: 5.00,

@@ -18,8 +18,18 @@ import session from 'express-session';
 import { createClient } from 'redis';
 import RedisStore from "connect-redis"
 
-require('./config/ws.config');
-require('dotenv').config({ path: './.env'});
+// require('./config/ws.config');
+import { wss } from './config/ws.config';
+// import { connectMinimalSLP } from './config/minimalSLPwallet';
+// require('dotenv').config({ path: './.env'});
+// import bchWalletConfig from './config/minimalSLPwallet.config';
+// import bchjs from './config/psfBch.config';
+// import main from './config/electrumCashNetwork.config';
+import { initializeAddressEmitter } from './config/psfBch.config';
+
+// Load environment variables from .env file
+import dotenv from 'dotenv';
+dotenv.config({ path: './.env' });
 
 declare module 'express-session' {
   export interface SessionData {
@@ -36,6 +46,45 @@ const redisStore = new RedisStore({
   client: redisClient,
   prefix: "myapp:",
 })
+
+// // Minimal SLP Wallet
+// async function initializeMinimalWallet() {
+//   try {
+//     await bchWalletConfig.initializeWallet();
+//     // Or initialize with a specific mnemonic
+//     // const wallet = await bchWalletConfig.initializeWallet('your mnemonic here');
+//     console.log('Wallet initialized');
+//   } catch (error) {
+//     console.error('Error initializing wallet', error);
+//   }
+// }
+// initializeMinimalWallet();
+
+// // PSF BCH Wallet
+// async function initializePsfBchWallet() {
+//   try {
+//     const seedBuffer = await bchjs.Mnemonic.toSeed(process.env.MNEMONIC!);
+//     console.log('seedBuffer:', seedBuffer);
+//   } catch (error) {
+//     console.error('Error initializing PSF BCH Wallet', error);
+//   }
+// }
+// initializePsfBchWallet();
+
+// // Electrum Cash Network
+// main();
+
+// // BCH Wallet
+initializeAddressEmitter();
+
+
+
+
+
+
+
+
+
 
 //DB connections
 async function connectDB() {
@@ -130,6 +179,13 @@ app.all('*', (_req: Request, _res: Response) => {
 app.use(errorHandler);
 
 const httpServer = createServer(app);
+
+// Upgrade HTTP server to handle WebSocket connections
+httpServer.on('upgrade', (request, socket, head) => {
+  wss.handleUpgrade(request, socket, head, (ws) => {
+    wss.emit('connection', ws, request);
+  });
+});
 
 // init(httpServer)
 // initEvent()
