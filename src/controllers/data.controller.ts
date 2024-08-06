@@ -4,7 +4,7 @@ import CountryModel from '../models/country';
 import LeagueModel from '../models/league';
 import LiveModel from '../models/live';
 import BetModel from '../models/bet';
-import FixtureModel from '../models/fixture';
+import { FixtureModel } from '../models/fixture';
 import { NotFoundError } from '../errors/not-found-error';
 
 class DataController extends BaseController {
@@ -24,7 +24,7 @@ class DataController extends BaseController {
   };
 
   public getBets = async (_req: Request, res: Response) => {
-    const bets = await BetModel.find();
+    const bets = await BetModel.find().populate('fixture');
     res.status(200).send(bets);
   };
 

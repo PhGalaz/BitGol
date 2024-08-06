@@ -1,4 +1,5 @@
-import { prop, getModelForClass } from '@typegoose/typegoose';
+import { prop, getModelForClass, Ref } from '@typegoose/typegoose';
+import { Fixture } from './fixture';
 
 class Bet {
   @prop({ required: true, unique: true })   // mongoose
@@ -34,8 +35,8 @@ class Bet {
   @prop()
   status: string;
 
-  @prop()
-  fixture: [];
+  @prop({ ref: () => Fixture }) // Reference to Fixture model
+  fixture: Ref<Fixture>;
 
   @prop()
   users: [];

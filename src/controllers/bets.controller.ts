@@ -14,6 +14,7 @@ class BetsController extends BaseController {
     public createSingleBet = async (req: Request, res: Response) => {
         try {
             const bet = req.body
+            console.log('576fugvuvuvuyvbyuv', bet);
             bet.type = await betService.getBetType(bet)
             bet.user_id = req.session.user ? req.session.user._id : null
             bet.status = 1 //'pending'

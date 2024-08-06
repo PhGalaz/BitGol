@@ -2,7 +2,7 @@ import { prop, getModelForClass } from '@typegoose/typegoose';
 
 class Fixture {
     @prop({ required: true, unique: true })
-    fixture_id: number;    
+    id: number;    
     
     @prop()
     league_id: number;
@@ -36,4 +36,4 @@ class Fixture {
 }
 
 const FixtureModel = getModelForClass(Fixture);
-export default FixtureModel;
+export { FixtureModel, Fixture };

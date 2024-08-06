@@ -1,3 +1,4 @@
+import { ObjectId } from "mongoose";
 export interface IBetCreationRequest {
     fixture_id: number;
     home: number;
