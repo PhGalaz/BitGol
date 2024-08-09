@@ -1,6 +1,7 @@
 import { ObjectId } from "mongoose";
 export interface IBetCreationRequest {
     fixture_id: number;
+    fixture: ObjectId;
     home: number;
     draw: number;
     away: number;

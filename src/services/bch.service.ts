@@ -1,7 +1,7 @@
 import { bchjs, bNode } from '../config/psfBch.config';
 import Bet from '../models/bet';
 class BchService {
-    public emitBetAddresses = async () => {
+    public emitBetAddress = async () => {
         const index = await Bet.countDocuments();
         console.log('index:', index);
         const betsNode = bchjs.HDNode.derive(bNode, 0);

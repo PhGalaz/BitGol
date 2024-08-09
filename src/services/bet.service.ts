@@ -8,13 +8,16 @@ type Type = 233 | 223 | 213 | 231 | 232 | 322 | 332 | 312 | 321 | 323 | 123 | 13
 
 class BetService {
     public openRequest = async (bet: IBetCreationRequest) => {
-        const { betFundingAddress, betTakingAddress, index } = await bchService.emitBetAddresses();
-        const fixture = new mongoose.Types.ObjectId(bet.fixture_id)
-        console.log('fixture:', fixture);
+        const { 
+            betFundingAddress, 
+            betTakingAddress, 
+            index 
+        } = await bchService.emitBetAddress();
+        // const fixture = new mongoose.Types.ObjectId(bet.fixture_id)
+        console.log('fixture:', bet.fixture);
         const newBet = {
             ...bet,
             id: index,
-            fixture: fixture,
             funding_address: betFundingAddress,
             taking_address: betTakingAddress
         }

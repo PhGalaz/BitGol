@@ -21,8 +21,8 @@ const Bchprice = require('../models/bchIndex');
 
 //Create a sample bet for testing purposes
 router.get('/newbet', async (req, res) => {
-  const fixture = await Fixture.findOne({fixture_id: 293657});
-  console.log(fixture)
+  // const fixture = await Fixture.findOne({fixture_id: 293657});
+  // console.log(fixture)
   await Bet.create({
     id: 88891,
     created: Date.now(),
@@ -44,66 +44,63 @@ router.get('/newbet', async (req, res) => {
 
 
 
+// // // // // // ***routes*** //
 
+// // // // // //Serve countries
+// // // // // router.get('/countries', async (req, res) => {
+// // // // //   const countries = await Country.find();
+// // // // //   res.json({ countries });
+// // // // // });
 
+// // // // // //Serve leagues
+// // // // // router.get('/leagues', async (req, res) => {
+// // // // //   const leagues = await League.find();
+// // // // //   res.json({ leagues });
+// // // // // });
 
-// ***routes*** //
+// // // // // //Serve bchinfo
+// // // // // router.get('/bch', async (req, res) => {
+// // // // //   const info = await Bchprice.find();
+// // // // //   res.json({ info });
+// // // // // });
 
-//Serve countries
-router.get('/countries', async (req, res) => {
-  const countries = await Country.find();
-  res.json({ countries });
-});
+// // // // // //Serve teams
+// // // // // router.get('/teams', async (req, res) => {
+// // // // //   const teams = await Team.find();
+// // // // //   res.json({ teams });
+// // // // // });
 
-//Serve leagues
-router.get('/leagues', async (req, res) => {
-  const leagues = await League.find();
-  res.json({ leagues });
-});
+// // // // // //Serve live games
+// // // // // router.get('/lives', async (req, res) => {
+// // // // //   const livegames = await Live.find();
+// // // // //   res.json({ livegames });
+// // // // // });
 
-//Serve bchinfo
-router.get('/bch', async (req, res) => {
-  const info = await Bchprice.find();
-  res.json({ info });
-});
+// // // // // //Serve open bets
+// // // // // router.get('/bets', async (req, res) => {
+// // // // //   const bets = await Bet.find();
+// // // // //   res.json({ bets });
+// // // // // });
 
-//Serve teams
-router.get('/teams', async (req, res) => {
-  const teams = await Team.find();
-  res.json({ teams });
-});
+// // // // // //Serve specific fixture by id
+// // // // // router.get('/fixture/:id', async (req, res) => {
+// // // // //   let fixture = await Fixture.findOne({ fixture_id: req.params.id }).lean()
+// // // // //   // let bets = await Bet.find({ fixture_id: req.params.id })
+// // // // //   // fixture.bets = bets
+// // // // //   res.json({ fixture })
+// // // // // }); 
 
-//Serve live games
-router.get('/lives', async (req, res) => {
-  const livegames = await Live.find();
-  res.json({ livegames });
-});
-
-//Serve open bets
-router.get('/bets', async (req, res) => {
-  const bets = await Bet.find();
-  res.json({ bets });
-});
-
-//Serve specific fixture by id
-router.get('/fixture/:id', async (req, res) => {
-  let fixture = await Fixture.findOne({ fixture_id: req.params.id }).lean()
-  // let bets = await Bet.find({ fixture_id: req.params.id })
-  // fixture.bets = bets
-  res.json({ fixture })
-}); 
-
-//Serve fixtures
-router.get('/fixtures', async (req, res) => {
-  // const fixtures = await Fixture.find();
-  const fixtures = await Fixture.find({
-      event_date: {
-          $gte: "2022-03-24T00:00:00.000Z",
-          $lt: "2022-03-25T00:00:00.000Z"
-      }
-  })
-  res.json({ fixtures });
-});
+// // // // // //Serve fixtures
+// // // // // router.get('/fixtures', async (req, res) => {
+// // // // //   // const fixtures = await Fixture.find();
+// // // // //   const fixtures = await Fixture.find({
+// // // // //       event_date: {
+// // // // //           $gte: "2022-03-24T00:00:00.000Z",
+// // // // //           $lt: "2022-03-25T00:00:00.000Z"
+// // // // //       }
+// // // // //   })
+// // // // //   res.json({ fixtures });
+// // // // // });
 
 
 

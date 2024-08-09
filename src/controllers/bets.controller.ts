@@ -14,10 +14,9 @@ class BetsController extends BaseController {
     public createSingleBet = async (req: Request, res: Response) => {
         try {
             const bet = req.body
-            console.log('576fugvuvuvuyvbyuv', bet);
             bet.type = await betService.getBetType(bet)
-            bet.user_id = req.session.user ? req.session.user._id : null
-            bet.status = 1 //'pending'
+            bet.user_id = req.session.user ? req.session.user.id : null
+            bet.status = 0 // 'created'
             bet.createdAt = dayjs().format('YYYY-MM-DD HH:mm:ss')
             bet.init_amount = 0
             bet.taken_amount = 0

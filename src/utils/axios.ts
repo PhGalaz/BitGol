@@ -22,12 +22,12 @@ class ApiCmc {
 }
 
 class ApiFootball {
-    url: string = 'https://api-football-v1.p.rapidapi.com/v2/';
-    constructor(url: string){
-        this.url += url
-    }
-    async get(params?: any){
-        const resp = await axios.get(this.url, {
+    url: string = 'https://api-football-v1.p.rapidapi.com/v3/';
+    // constructor(url: string){
+    //     this.url += url
+    // }
+    async get(url:string, params?: any){
+        const resp = await axios.get(this.url + url, {
             headers: {
                 "x-rapidapi-key": process.env.API_FOO_KEY,
                 "x-rapidapi-host": "api-football-v1.p.rapidapi.com",
@@ -45,9 +45,11 @@ class ApiFootball {
     }
 }
 
+const ApiFutbol = new ApiFootball()
+
 export {
     ApiCmc,
-    ApiFootball
+    ApiFutbol
 }
 
   

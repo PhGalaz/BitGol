@@ -2,38 +2,24 @@ import { prop, getModelForClass } from '@typegoose/typegoose';
 
 class Fixture {
     @prop({ required: true, unique: true })
-    id: number;    
-    
-    @prop()
-    league_id: number;
+    id: number;
 
-    @prop()
-    event_date: Date;
+    @prop({ type: () => Object })  // Or define a more specific type if possible
+    fixture: Record<string, any>;
 
-    @prop()
-    event_timestamp: number;
+    @prop({ type: () => Object })
+    league: Record<string, any>;
 
-    @prop()
-    round: string;
+    @prop({ type: () => Object })
+    teams: Record<string, any>;
 
-    @prop()
-    status: string;
+    @prop({ type: () => Object })
+    goals: Record<string, any>;
 
-    @prop()
-    venue: [];
-
-    @prop()
-    homeTeam: [];
-
-    @prop()
-    awayTeam: [];
-
-    @prop()
-    score: [];
-
-    @prop()
-    league: [];
+    @prop({ type: () => Object })
+    score: Record<string, any>;
 }
 
 const FixtureModel = getModelForClass(Fixture);
 export { FixtureModel, Fixture };
+

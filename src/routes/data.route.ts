@@ -269,15 +269,10 @@ dataRoute.get(
  * /data/fixtures:
  *   get:
  *     description:
- *       "Get fixtures by id"
- *     summary: "get fixture by id endpoint"
+ *       "Get fixtures"
+ *     summary: ""
  *     tags:
  *       - Data
- *     parameters:
- *      - name: id
- *        in: query
- *        required: true
- *        type: number
  *     responses:
  *       200:
  *         examples:

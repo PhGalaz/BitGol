@@ -25,24 +25,20 @@ class DataController extends BaseController {
 
   public getBets = async (_req: Request, res: Response) => {
     const bets = await BetModel.find().populate('fixture');
+    console.log(bets)
     res.status(200).send(bets);
   };
 
   public getFixtureById = async (req: Request, res: Response) => {
-    console.log(req.query.id)
     const id = parseInt(req.query.id as string);
-    const fixture = await FixtureModel.findOne({ fixture_id: id }).lean()
+    console.log(id)
+    const fixture = await FixtureModel.findOne({ id: id }).lean()
     if (!fixture) throw new NotFoundError();
     res.status(200).send(fixture);
   };
 
   public getNextFixtures = async (_req: Request, res: Response) => {
-    const fixtures = await FixtureModel.find({
-      event_date: {
-          $gte: "2022-03-24T00:00:00.000Z",
-          $lt: "2022-03-25T00:00:00.000Z"
-      }
-    }).lean()
+    const fixtures = await FixtureModel.find().lean()
     res.status(200).send(fixtures);
   };
 
